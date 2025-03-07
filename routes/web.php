@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-
+use App\Http\Controllers\v1\PayPalPaymentController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -14,5 +14,21 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('paypal_screen');
 });
+
+Route::post('/handle-payment', [PayPalPaymentController::class, 'createOrder'])->name('make.payment');
+
+Route::get('/cancel-payment', [PayPalPaymentController::class,'paymentCancel'])->name('cancel.payment');
+
+Route::post('/payment-success', [PayPalPaymentController::class, 'capturePayment'])->name('success.payment');
+
+Route::get('/success', function () {
+    return view('success');
+})->name('success');
+
+Route::get('/cancel', function () {
+    return view('cancel');
+})->name('cancel');
+
+
