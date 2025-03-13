@@ -1,6 +1,7 @@
 <?php
 namespace App\Services;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\RateLimiter;
 
 class PayPalService
 {
@@ -37,6 +38,12 @@ class PayPalService
                 ->post('https://api-m.sandbox.paypal.com/v1/oauth2/token', [
                     'grant_type' => 'client_credentials',
                 ]);
+        $session_user = session('_token');                
+        if (RateLimiter::tooManyAttempts('get-paypal-token:'.$session_user, $perMinute = 2)) {
+            return 'Too many attempts!';
+        }
+
+
         return $response->json()['access_token'] ?? null;
         
     }
@@ -101,9 +108,7 @@ class PayPalService
                     ]]
                 
                 );
-
         
-
         return $response->json();
 
     }

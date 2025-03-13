@@ -6,16 +6,111 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <title>Donate with PayPal</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css">
+
+
+
+<script src="https://cdn.tailwindcss.com"></script>
+
     <!-- <title>Donate with PayPal</title> -->
 
 </head>
-<body>
+<body class="bg-white-300">
+<div class="max-w-sm rounded overflow-hidden shadow-lg m-auto  mt-10  fill-gray-600" >
+<div class="bg-blue-400 px-4 py-8 text-lg font-semibold text-white-800 ">
+<h3  class=" flex items-center  justify-center  text-xl font-bold text-white">Your Gift goes Twice as far</h3>
 
-<h2>Donate with PayPal</h2>
+    </div>
+    <!-- <h4 class="text-black  flex items-left">Select a donation amount 
 
+<span><i class="fa-solid fa-lock  text-orange-400" ></i></span>
+</h4> -->
     <!-- @csrf -->
-    <input type="number" id="donationAmount" placeholder="Enter amount" value="10">
+    <input type="number" id="donationAmount" placeholder="Enter custom amount"  class="border border-gray-300 p-2 m-2  ml-16 outline-solid" >
     <!-- <button type="Submit" id="paypal-button" >Submit</button> -->
+     <p id="item"></p>
+<div class="flex items-center justify-center  bg-white-300 grid grid-cols-3 gap-3">
+
+<button class="flex items-center gap-2 bg-gray-200 hover:bg-orange-400 text-black font-bold py-2 px-4 m-4 " onclick="paymentValue()">
+  <i class="fa-solid fa-dollar-sign"></i>
+  <span>20</span>
+</button>
+<button class="flex items-center gap-2 bg-gray-200 hover:bg-orange-400 text-black font-bold py-2 px-4 m-4 " onclick="paymentValue()">
+  <i class="fa-solid fa-dollar-sign"></i>
+  <span>50</span>
+</button>
+<button class="flex items-center gap-2 bg-gray-200 hover:bg-orange-400 text-black font-bold py-2 px-4 m-4 " onclick="paymentValue()">
+  <i class="fa-solid fa-dollar-sign"></i>
+  <span>100</span>
+</button>
+
+
+</div>
+
+
+
+
+<div class="flex items-center justify-center  bg-white-300 grid grid-cols-3 gap-3">
+
+
+   
+<button class="flex items-center gap-2 bg-gray-200 hover:bg-orange-400 text-black font-bold py-2 px-4 m-4 " onclick="paymentValue()">
+  <i class="fa-solid fa-dollar-sign"></i>
+  <span>500</span>
+</button>
+
+<button class="flex items-center gap-2 bg-gray-200 hover:bg-orange-400 text-black font-bold py-2 px-4 m-4 " onclick="paymentValue()">
+  <i class="fa-solid fa-dollar-sign"></i>
+  <span>1000</span>
+</button>
+
+<button class="flex items-center gap-2 bg-gray-200 hover:bg-orange-400 text-black font-bold py-2 px-4 m-4 " onclick="paymentValue()">
+  <i class="fa-solid fa-dollar-sign"></i>
+  <span>10</span>
+</button>
+</div>
+
+
+
+
+<div class="flex items-center justify-center  bg-white-300 grid grid-cols-3 gap-3">
+
+
+   
+<button class="payment-item  flex items-center gap-2 bg-gray-200 hover:bg-orange-400 text-black font-bold py-2 px-4 m-4 rounded-full " onclick="paymentItem()">
+  Food
+</button>
+
+<button class="payment-item flex items-center gap-2 bg-gray-200 hover:bg-orange-400 text-black font-bold py-2 px-4 m-4 rounded-full" onclick="paymentItem()">
+ 
+  Fee
+</button>
+
+<button class="payment-item  flex items-center gap-2 bg-gray-200 hover:bg-orange-400 text-black font-bold w-24 px-4 m-4 rounded-full" onclick="paymentItem()">
+ Class rooms
+</button>
+</div>
+
+
+<div class="flex items-center justify-center  bg-white-300 grid grid-cols-3 gap-3">
+
+
+   
+<button class="payment-item flex items-center gap-2 bg-gray-200 hover:bg-orange-400 text-black font-bold w-28 px-4 m-4 rounded-full " onclick="paymentItem()">
+  School trip
+</button>
+
+<button class="payment-item        flex items-center gap-2 bg-gray-200 hover:bg-orange-400 text-black font-bold w-28 px-4  m-4  rounded-full" onclick="paymentItem()">
+ 
+  School van
+</button>
+
+<button class="payment-item        flex items-center gap-2 bg-gray-200 hover:bg-orange-400 text-black font-bold py-2 px-4 m-4 rounded-full" onclick="paymentItem()">
+ Uniform
+</button>
+</div>
+
+
 
 
 
@@ -23,6 +118,28 @@
 
 
 </div>
+
+</div>
+
+<script>
+
+function paymentValue() {
+    const amount = document.getElementById('donationAmount')
+    amount.value = event.target.innerText
+    console.log(amount.value);
+}
+function paymentItem () {
+    const item = document.getElementById('item')
+    item.value = event.target.textContent
+    const buttons = document.querySelectorAll(".payment-item");
+    buttons.forEach(element => {
+        element.classList.remove("bg-orange-400");
+    });
+    event.target.classList.add("bg-orange-400");
+
+}
+
+</script>
 
 <!-- <script src="https://www.paypal.com/sdk/js?client-id={{ config('services.paypal.key') }}&currency=USD"></script>
 
@@ -52,13 +169,12 @@ document.addEventListener("DOMContentLoaded", function () {
             style: {
             shape: "rect",
             layout: "vertical",
-            color: "gold",
-            label: "paypal",
+            color: "blue",
+            label: "",
+            
         
         },
-        message: {
-            amount: 100,
-        } ,
+
 
             createOrder: async function (data, actions ) {
                 //get amount input 
@@ -69,10 +185,8 @@ document.addEventListener("DOMContentLoaded", function () {
                 headers: { "Content-Type": "application/json", 
                     'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
 
-                    // "XCSRF-TOKEN" :" {{ csrf_token() }}",
-                    // "Cross-Origin-Opener-Policy": "same-origin-allow-popups"
                 },
-                body: JSON.stringify({ amount: amount })
+                body: JSON.stringify({ amount: amount , item: document.getElementById('item').value })
                     })
                     .then(response => response.json())
                     .then(order => order.id)
@@ -88,7 +202,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
 
                 },
-                body : JSON.stringify({ order_id : data.orderID })
+                body : JSON.stringify({ order_id : data.orderID , item: document.getElementById('item').value})
             })
             .then(response=> response.json())
             .then(details => {
@@ -97,19 +211,17 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
                     } else {
-                        // return await fetch("{{ route('success') }} ",{
-                        //     method: "GET",
-
-                        // }).then(response => response.json())
-                        // .then(data => {
-                        //     console.log(data)
-                        // })
-                        console.log(details);
+                        window.location.replace("{{ route('success') }}");
                     }
             })
 
 
+            },
+            onCancel : function (data) {
+                window.location.replace("{{ route('cancel') }}");
             }
+
+
         }).render("#paypal-button-container")
         .then(() => console.log("PayPal button rendered successfully!"))
         .catch((err) => console.error("PayPal button failed to render:", err));

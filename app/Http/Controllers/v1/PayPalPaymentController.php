@@ -27,7 +27,6 @@ class PayPalPaymentController extends Controller
             
 
         } catch (\Throwable $th) {
-            info($th);
             return response()->json([
                 'error' => 'Failed to create Paypal order',
                 'reason' => $th
@@ -49,7 +48,6 @@ class PayPalPaymentController extends Controller
     public function capturePayment(Request $request) {
 
         try {
-            //code...
             $orderId = $request->order_id;
             info(['Order ID' => $orderId, 'Request Data' => $request->all()]);
             $payment = $this->paypal_service->capturePayment($orderId);
@@ -60,9 +58,11 @@ class PayPalPaymentController extends Controller
             }
 
             DB::table('payment_tracking')->insert([
-                'transaction_id' => $payment['purchase_units']['payments']['captures']['id'],
-                'amount' => $payment['purchase_units']['payments']['captures']['amount']['value'],
+                'transaction_id' => $payment['purchase_units'][0]['payments']['captures'][0]['id'],
+                'amount' => $payment['purchase_units'][0]['payments']['captures'][0]['amount']['value'],
                 'status' => $payment['status'],
+                'created_at' => now(),
+                'item'=> $request->item
 
             ]);
         
@@ -70,14 +70,11 @@ class PayPalPaymentController extends Controller
             return response()->json($payment);
 
         } catch (Exception $e) {
-            //throw $th;
-            info(['Error ',$e]);
             return response()->json([
                 'error' => 'Failed to capture payment',
                 'reason' => $e
             ]);
         
-       
 
 
     }
