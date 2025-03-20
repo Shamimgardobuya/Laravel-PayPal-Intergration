@@ -6,6 +6,7 @@ use App\Http\Controllers\v1\StaffController;
 use App\Mail\NotifyOnEmailFailure;
 use Illuminate\Http\Request;
 use App\Jobs\NotifyStaffJob;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Mail;
 
 /*
@@ -76,4 +77,9 @@ Route::get('/token',function (Request $request) {
         'token' => $token 
     ]);
 
+});
+
+Route::get('/run-migrations', function () {
+    Artisan::call('migrate', ['--force' => true]);
+    return 'Migrations ran successfully!';
 });
