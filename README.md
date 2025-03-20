@@ -1,8 +1,8 @@
-**Laravel PayPal Integration Web App
-**
+__Laravel PayPal Integration Web App__
+
 This is a Laravel-based web application that integrates PayPal for processing donations to a school. Additionally, it provides API endpoints for managing users and staff within the school system.
 
-**Getting Started
+__Getting Started__
 Prerequisites
 Ensure you have the following installed before setting up the project:
 
@@ -11,7 +11,7 @@ Ensure you have the following installed before setting up the project:
 3. Relational Database (e.g., MySQL, PostgreSQL)
 4. Node.js and npm
 
-**Installation Steps
+__Installation Steps__
 1. Clone the repository:
 
 ```git clone <repository-url>```
@@ -31,7 +31,7 @@ php artisan db:seed
 npm install
 npm run dev
 ```
-  ** REST API Routes**
+  __REST API Routes__
 1. Making a Payment
 To make a payment, visit:
 📍 http://localhost:8000/
