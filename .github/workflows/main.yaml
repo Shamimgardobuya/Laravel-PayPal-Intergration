@@ -19,7 +19,8 @@ jobs:
         with:
           php-version: '8.1'
           extensions: pdo, pdo_pgsql, pgsql
-
+      - name: Install OpenSSL libraries
+        run: sudo apt-get update && sudo apt-get install -y libssl-dev
       - name: Install Vercel CLI
         run: npm install --global vercel@latest
 
