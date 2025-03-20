@@ -16,7 +16,7 @@ class NotifyOnEmailFailure extends Mailable
     /**
      * Create a new message instance.
      */
-    public function __construct()
+    public function __construct(protected $messageContent)
     {
         //
     }
@@ -37,7 +37,9 @@ class NotifyOnEmailFailure extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: 'view.name',
+            view: 'emails.error_message',
+            with:[
+            'messageContent' => $this->messageContent]
         );
     }
 

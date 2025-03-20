@@ -16,7 +16,7 @@ class NotifyStaffEmail extends Mailable
     /**
      * Create a new message instance.
      */
-    public function __construct(private $name, private $email, private $subject, private $message)
+    public function __construct(protected $name, protected $email, public $subject, protected $messageContent)
     {
 
     }
@@ -40,7 +40,9 @@ class NotifyStaffEmail extends Mailable
             view: 'emails.staff_email',
             with: [
                 'email' => $this->email,
-                'message' => $this->message
+                'messageContent' => $this->messageContent,
+                'name' => $this->name
+
             ]
         );
     }

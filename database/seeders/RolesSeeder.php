@@ -15,22 +15,24 @@ class RolesSeeder extends Seeder
     public function run(): void
     {
 
-        $roles = [ //NB, if you want more roles to be seeded, make the value of roles, be many arrays such that one array will represent a row in the roles table
-            'name' => 'Super Admin'
+        $roles = [ 
+            ['name' => 'Super Admin'],
+            ['name'=> 'Staff']
         ];
 
-
-        $dataFound = DB::table('roles')->where('name', $roles['name'])->exists();
-        if ($dataFound) {
-            echo "data exists, cannot seed";
-        } else {
-            try {
-
-                DB::beginTransaction();
-                DB::table('roles')->insert($roles);
-                DB::commit();
-            } catch (\Throwable $th) {
-                info(json_encode($th));
+        foreach ($roles as $role) {
+            $dataFound = DB::table('roles')->where('name', $role['name'])->exists();
+            if ($dataFound) {
+                echo "data exists, cannot seed";
+            } else {
+                try {
+    
+                    DB::beginTransaction();
+                    DB::table('roles')->insert($role);
+                    DB::commit();
+                } catch (\Throwable $th) {
+                    info(json_encode($th));
+                }
             }
         }
     }

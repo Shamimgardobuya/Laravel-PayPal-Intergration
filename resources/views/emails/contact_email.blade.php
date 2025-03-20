@@ -6,7 +6,7 @@
     <title>Document</title>
 </head>
 <body>
-    <form action="{{ url('/send-email') }}"   method="POST"    style="width: 1155px; height: 807px;">
+    <form action="{{ url('/api/send-email') }}"   method="POST"    style="width: 1155px; height: 807px;">
         @csrf
 <div style="display: flex; align-items: center; gap: 10px;">
 <input type="text" name="name" placeholder="Your Name" style="outline: 1px solid darkgreen; border: none; padding: 8px; border-radius: none; margin:2px">

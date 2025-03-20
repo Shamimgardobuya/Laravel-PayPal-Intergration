@@ -3,7 +3,6 @@
         <h4 style="color: #333; margin-bottom: 10px;">{{ $subject }}</h4>
         
         <p style="color: #555; font-size: 16px; margin-bottom: 10px;">Mail from <strong>{{ $name }}</strong></p>
-        
-        <p style="color: #333; font-size: 14px; line-height: 1.5;">{{ $message }}</p>
+        <p style="color: #333; font-size: 14px; line-height: 1.5;">{{ $messageContent }}</p>
     </div>
 </body>

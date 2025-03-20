@@ -26,6 +26,14 @@ class NotifyStaffJob implements ShouldQueue
      */
     public function handle(): void
     {
-        Mail::to(env('MAIL_FROM_ADDRESS')->send(new NotifyStaffEmail($this->name, $this->email, $this->subject, $this->message)));
+        try {
+            //code...
+            Mail::to(config('mail.from.address'))->queue(new NotifyStaffEmail($this->name, $this->email, $this->subject, $this->message));
+
+        } catch (\Throwable $th) {
+    
+            info( $th);
+
+        }
     }
 }
