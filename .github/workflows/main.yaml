@@ -28,7 +28,7 @@ jobs:
         run: composer install --no-dev --optimize-autoloader
 
       - name: Link Project to Vercel
-        run: vercel link --yes --cwd ./  --token=${{ secrets.VERCEL_TOKEN }}
+        run: vercel link --yes --cwd ./
 
       - name: Pull Environment Variables from Vercel
         run: vercel env pull .env --token=${{ secrets.VERCEL_TOKEN }}
