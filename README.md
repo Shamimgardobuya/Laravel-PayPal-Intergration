@@ -1,46 +1,105 @@
-web app for intergrating Paypal payment in a Laravel application. App curently contains web page for Paypal where user will make payment for donation to  a school and also api's such as users and staff for management of a school.
+**Laravel PayPal Integration Web App
+**
+This is a Laravel-based web application that integrates PayPal for processing donations to a school. Additionally, it provides API endpoints for managing users and staff within the school system.
 
-How to get Started
-Prerequisites for installment 
-  Laravel
-  Composer
-  Relational Database
-  Node and npm
-Clone the repository.
-Run composer install
-Run migrations by using the command php artisan migrate
-RUn database seeders 
-npm run dev 
+**Getting Started
+Prerequisites
+Ensure you have the following installed before setting up the project:
 
-REST API routes
-To Make payment, visit the landing endpoing , localhost:8000/
+1. Laravel
+2. Composer
+3. Relational Database (e.g., MySQL, PostgreSQL)
+4. Node.js and npm
 
-To Create a Staff member ,
-  visit endpoint http://localhost:8000/api/staff/create
-   and make a post request with these values filled:
-       first_name => required input
-       last_name => required input
-       role => required, depends on the role of the staff, if Teacher , head teacher  or cook.
-       email => not required.
-       phone => not required
-       file => not required, a profile picture of the staff
-       
+**Installation Steps
+1. Clone the repository:
 
-To create a User.
-visit the endpoint with a POST request 
-    http://localhost:8000/api/users/create
-    payload : name,email,  password and role_name.
-    NB: role_name can only have any of these 2 values  Super Admin and Staff
-To login the user
-  visit the endpoint with a POST request 
-    http://localhost:8000/api/users/login
-    payload : email and password. You will receive a token that you are to persist with any other request that you make to the server.
-To edit a user
-    visit the endpoint with a PATCH request
-      http://localhost:8000/api/users/update/{id}
-      parameters, name , email, password.
-  
-To delete a user 
-   visit the endpoint with a DELETE request
-      http://localhost:8000/api/users/delete/{id}
-   
+```git clone <repository-url>```
+```cd <project-folder>```
+2. Install dependencies by running ``` composer install```
+4. Run database migrations:
+
+
+```php artisan migrate ```
+5. Seed the database
+
+```
+php artisan db:seed
+```
+6. Compile frontend assets:
+```
+npm install
+npm run dev
+```
+  ** REST API Routes**
+1. Making a Payment
+To make a payment, visit:
+📍 http://localhost:8000/
+
+2. Staff Management
+Create a Staff Member
+Endpoint: POST http://localhost:8000/api/staff/create
+
+Payload:
+
+```json
+{
+  "first_name": "required",
+  "last_name": "required",
+  "role": "required (Teacher, Head Teacher, Cook, etc.)",
+  "email": "optional",
+  "phone": "optional",
+  "file": "optional (Profile Picture)"
+}
+```
+3. User Management
+Create a User
+Endpoint: POST http://localhost:8000/api/users/create
+
+Payload:
+```
+json
+{
+  "name": "required",
+  "email": "required",
+  "password": "required",
+  "role_name": "required (Super Admin or Staff)"
+}
+```
+User Login
+Endpoint: POST http://localhost:8000/api/users/login
+
+Payload:
+```
+json
+
+{
+  "email": "required",
+  "password": "required"
+}
+```
+Response:
+
+A token is returned, which must be included in all authenticated requests.
+
+Update a User
+Endpoint: PATCH http://localhost:8000/api/users/update/{id}
+
+Payload:
+```
+json
+
+{
+  "name": "optional",
+  "email": "optional",
+  "password": "optional"
+}
+```
+Delete a User
+Endpoint: DELETE http://localhost:8000/api/users/delete/{id}
+
+**Notes**
+Ensure that environment variables (e.g., database credentials, PayPal API keys) are correctly set in the .env file.
+
+Use the provided authentication token when making requests to protected API endpoints.
+
