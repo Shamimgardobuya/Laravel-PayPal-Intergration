@@ -2,7 +2,7 @@
     "version": 2,
     "framework": null,
     "functions": {
-        "api/index.php": { "runtime": "vercel-php@0.6.1" }
+        "public/index.php": { "runtime": "vercel-php@0.6.1" }
     },
     "outputDirectory": "public",
     "routes": [
@@ -12,7 +12,7 @@
         },
         {
             "src": "/(.*)",
-            "dest": "/api/index.php"
+            "dest": "/public/index.php"
         }
     ],
     "env": {
