@@ -16,7 +16,7 @@
         }
     ],
     "env": {
-        "NODE_VERSION" : 18,
+        "NODE_VERSION" : "18",
         "APP_ENV": "production",
         "APP_DEBUG": "true",
         "APP_URL": "https://payment-app-pi-ten.vercel.app",
