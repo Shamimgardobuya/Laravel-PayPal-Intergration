@@ -46,7 +46,10 @@ jobs:
           DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
       
       - name: Create Symlink for Vercel
-        run: ln -s public/index.php api/index.php
-      
+        run: |
+          if [ -L api/index.php ]; then
+            rm api/index.php
+          fi
+            ln -s public/index.php api/index.php
       - name: Deploy to Vercel
         run: vercel deploy --prod --token=${{ secrets.VERCEL_TOKEN }}
