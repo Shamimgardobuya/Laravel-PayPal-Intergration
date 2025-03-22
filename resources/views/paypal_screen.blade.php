@@ -148,7 +148,7 @@ function paymentItem () {
 </script> -->
 
 <script
-            src="https://www.paypal.com/sdk/js?client-id={{ config('services.paypal.key') }}&buyer-country=US&currency=USD&components=buttons&enable-funding=venmo,paylater,card"
+            src="https://www.paypal.com/sdk/js?client-id={{ config('services.paypal.key') }}&currency=USD&components=buttons&enable-funding=venmo,paylater,card"
             data-sdk-integration-source="developer-studio"
         ></script>
 <!-- <script>
