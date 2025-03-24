@@ -10,7 +10,15 @@ jobs:
     name: Deploy
     runs-on: ubuntu-latest
 
-    
+    services:
+      postgres:
+        image: postgres:latest
+        env:
+          POSTGRES_DB:  ${{ secrets.DB_DATABASE }}
+          POSTGRES_USER: ${{ secrets.DB_USERNAME }}
+          POSTGRES_PASSWORD: ${{ secrets.DB_PASSWORD }}
+        ports:
+          - 5432:5432
     steps:
       - name: Checkout Repository
         uses: actions/checkout@v3
