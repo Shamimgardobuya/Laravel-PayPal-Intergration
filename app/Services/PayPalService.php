@@ -33,19 +33,22 @@ class PayPalService
     */
     public function getAccessToken()
     {
-        $response = Http::withBasicAuth($this->clientId, $this->clientSecret)
-                ->asForm()
-                ->post('https://api-m.sandbox.paypal.com/v1/oauth2/token', [
-                    'grant_type' => 'client_credentials',
-                ]);
-        $session_user = session('_token');                
-        if (RateLimiter::tooManyAttempts('get-paypal-token:'.$session_user, $perMinute = 2)) {
-            return 'Too many attempts!';
+        try {
+            $client_identification = base64_encode("$this->clientId:$this->clientSecret");
+            $curlCommand = "curl -v -X POST \"https://api-m.paypal.com/v1/oauth2/token\" \
+                -H \"Authorization: Basic $client_identification\" \
+                -H \"Content-Type: application/x-www-form-urlencoded\" \
+                -d \"grant_type=client_credentials\"";
+            
+            $response = shell_exec($curlCommand);
+            return json_decode($response)->access_token;
+        } catch (\Throwable $th) {
+            return response()->json(
+                ['success'=> false,
+                'message' => $th]
+            );
         }
-
-
-        return $response->json()['access_token'] ?? null;
-        
+    
     }
 
     /**
