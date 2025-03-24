@@ -36,6 +36,9 @@
         
 
     },
+    "rewrites": [
+        { "source": "/api/(.*)", "destination": "/public/index.php?path=$1" }
+    ],
     "crons" : [
         {
             "path": "/run-queue",
