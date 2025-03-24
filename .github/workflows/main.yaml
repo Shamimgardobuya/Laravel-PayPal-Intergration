@@ -50,6 +50,15 @@ jobs:
           else
             echo "Symbolic link already exists."
           fi
+      - name: Clear Laravel Config Cache
+        run: php artisan config:clear
+
+      - name: Wait for PostgreSQL
+        run: sleep 10
+
+      - name: Debug ENV Variables
+        run: cat .env
+
       - name: Migrate DB
         run: php artisan migrate --force
         
