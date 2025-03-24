@@ -35,7 +35,7 @@ class PayPalService
     {
         try {
             $client_identification = base64_encode("$this->clientId:$this->clientSecret");
-            $curlCommand = "curl -v -X POST \"https://api-m.paypal.com/v1/oauth2/token\" \
+            $curlCommand = "curl -s --fail  -X POST \"https://api-m.paypal.com/v1/oauth2/token\" \
                 -H \"Authorization: Basic $client_identification\" \
                 -H \"Content-Type: application/x-www-form-urlencoded\" \
                 -d \"grant_type=client_credentials\"";
@@ -80,7 +80,6 @@ class PayPalService
                     
             
                     ]);
-        // info($response);
         return $response->json();
     }
 
