@@ -41,7 +41,9 @@ class PayPalService
                 -d \"grant_type=client_credentials\"";
             
             $response = shell_exec($curlCommand);
-            return json_decode($response)->access_token;
+            $responseData = json_decode($response, true);
+            $accessToken = $responseData['access_token'] ?? null;                      
+            return $accessToken;
         } catch (\Throwable $th) {
             return response()->json(
                 ['success'=> false,
