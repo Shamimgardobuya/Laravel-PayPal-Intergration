@@ -35,5 +35,11 @@
         "DB_CONNECTION": "pgsql"      
         
 
-    }
+    },
+    "crons" : [
+        {
+            "path": "/run-queue",
+            "schedule": "*/5 * * * *"
+        }
+    ]
 }

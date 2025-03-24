@@ -7,6 +7,7 @@ use App\Mail\NotifyOnEmailFailure;
 use Illuminate\Http\Request;
 use App\Jobs\NotifyStaffJob;
 use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Mail;
 
 /*
@@ -25,9 +26,9 @@ Route::get('/', function () {
 });
 // Route::get('/create-staff-template', [StaffController::class, 'index']);
 // Route::get('/all-staff', [StaffController::class, 'show']);
-// Route::get('/email-template', function () {
-//     return view('emails.contact_email');
-// });
+Route::get('/email-template', function () {
+    return view('emails.contact_email');
+});
 // Route::get('/edit/{id}', [StaffController::class,'edit']);
 // Route::post('/update/{id}', [StaffController::class, 'update'])->name('staff.update');
 // Route::post('/send-email', function (Request $request) {
@@ -82,4 +83,10 @@ Route::get('/token',function (Request $request) {
 Route::get('/run-migrations', function () {
     Artisan::call('migrate', ['--force' => true]);
     return 'Migrations ran successfully!';
+});
+
+
+Route::get('/run-queue', function () {
+    Artisan::call('queue:work --stop-when-empty');
+    return 'Queue processed';
 });

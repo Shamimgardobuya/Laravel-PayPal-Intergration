@@ -23,19 +23,6 @@ use Illuminate\Support\Facades\Mail;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
-Route::post('/handle-payment', [PayPalPaymentController::class, 'createOrder'])->name('make.payment');
-
-Route::get('/cancel-payment', [PayPalPaymentController::class,'paymentCancel'])->name('cancel.payment');
-
-Route::post('/payment-success', [PayPalPaymentController::class, 'capturePayment'])->name('success.payment');
-
-Route::get('/success', function () {
-    return view('success');
-})->name('success');
-
-Route::get('/cancel', function () {
-    return view('cancel');
-})->name('cancel');
 
 
 
