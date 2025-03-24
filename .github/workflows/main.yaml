@@ -39,7 +39,14 @@ jobs:
           else
             echo "Symbolic link already exists."
           fi
-
+      - name: Set Database ENV Variables Manually
+        run: |
+          echo "DB_CONNECTION=pgsql" >> .env
+          echo "DB_HOST=${{ secrets.DB_HOST }}" >> .env
+          echo "DB_PORT=5432" >> .env
+          echo "DB_DATABASE=${{ secrets.DB_DATABASE }}" >> .env
+          echo "DB_USERNAME=${{ secrets.DB_USERNAME }}" >> .env
+          echo "DB_PASSWORD=${{ secrets.DB_PASSWORD }}" >> .env
       - name: Migrate DB
         run: php artisan migrate --force
         
