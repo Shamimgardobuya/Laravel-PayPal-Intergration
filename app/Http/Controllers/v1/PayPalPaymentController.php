@@ -20,7 +20,7 @@ class PayPalPaymentController extends Controller
             $amount = $request->input('amount');
             $order = $this->paypal_service->createOrder($amount);
             if (!$order || !isset($order['id'])) {
-                return response()->json(['error' => 'Failed to create PayPal order'. $request->all()], 500);
+                return response()->json(['error' => 'Failed to create PayPal order'], 500);
             }
             
             return response()->json($order);
@@ -29,7 +29,7 @@ class PayPalPaymentController extends Controller
         } catch (\Throwable $th) {
             return response()->json([
                 'error' => 'Failed to create Paypal order',
-                'reason' => $th
+                'reason' => $th->getMessage()
             ]);
             
         }
