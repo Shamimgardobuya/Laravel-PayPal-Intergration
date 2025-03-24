@@ -15,9 +15,9 @@ jobs:
         image: postgres:latest
         env:
           POSTGRES_PASSWORD: ${{ secrets.DB_PASSWORD }}
-          POSTGRES_USER : ${{ secrets.DB_USERNAME }}
+          POSTGRES_USER: ${{ secrets.DB_USERNAME }}
           POSTGRES_DATABASE: ${{ secrets.DB_DATABASE }}
-          POSTGRES_HOST :  ${{ secrets.DB_HOST }}
+          POSTGRES_HOST:  ${{ secrets.DB_HOST }}
         ports:
           - 5432:5432
     steps:
@@ -46,10 +46,16 @@ jobs:
       - name: Symlink of public folder
         run: |
           if [ ! -L public/storage ]; then
-            php artisan storage link || echo "Symbolic link already exists or there was an error."
+            php artisan storage link || echo "Failed to create symbolic link. Ensure the 'public/storage' directory exists and has the correct permissions."
           else
             echo "Symbolic link already exists."
           fi
+      - name: Migrate DB
+        run: php artisan migrate --force
+        
+      - name: Seeding DB
+        run: php artisan db seed --force
+
         env:
           APP_ENV: production
           DB_CONNECTION: pgsql
@@ -58,12 +64,6 @@ jobs:
           DB_DATABASE: ${{ secrets.DB_DATABASE }}
           DB_USERNAME: ${{ secrets.DB_USERNAME }}
           DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
-
-      - name: Migrate DB
-        run: php artisan migrate --force
-        
-      - name: Seeding  DB
-        run: php artisan db seed --force
 
       - name: Deploy to Vercel
         run: vercel deploy --prod --token=${{ secrets.VERCEL_TOKEN }}
