@@ -43,7 +43,7 @@ jobs:
         run: php artisan migrate --force
         
       - name: Seeding DB
-        run: php artisan db seed --force
+        run: php artisan db seed 
         
         env:
           APP_ENV: production
