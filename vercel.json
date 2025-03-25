@@ -42,7 +42,7 @@
     "crons" : [
         {
             "path": "/run-queue",
-            "schedule": "*/4 * * * *"
+            "schedule": "0 10 * * *"
         }
     ]
 }
