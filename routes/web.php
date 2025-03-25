@@ -7,6 +7,7 @@ use App\Mail\NotifyOnEmailFailure;
 use Illuminate\Http\Request;
 use App\Jobs\NotifyStaffJob;
 use Illuminate\Support\Facades\Artisan;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Mail;
 
@@ -28,6 +29,14 @@ Route::get('/', function () {
 // Route::get('/all-staff', [StaffController::class, 'show']);
 Route::get('/email-template', function () {
     return view('emails.contact_email');
+});
+Route::get('/users', function () {
+    return response()->json(
+        [
+            'success'=> true,
+            'data'=> DB::table('roles')->select('*')->get()
+        ]
+    );
 });
 // Route::get('/edit/{id}', [StaffController::class,'edit']);
 // Route::post('/update/{id}', [StaffController::class, 'update'])->name('staff.update');
