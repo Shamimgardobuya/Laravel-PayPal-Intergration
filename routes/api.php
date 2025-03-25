@@ -67,10 +67,7 @@ Route::get('/users',[ UserController::class, 'index'])->name('get_users');
 
 Route::post('/users/create',[ UserController::class, 'store'])->name('create_user');
 
-
-Route::get('/users',[ UserController::class, 'index'])->name('get_users');
-
-Route::post('/users/login',[ UserController::class, 'loginUser'])->name('login_user');
+Route::post('/users/login',[ UserController::class, 'loginUser'])->name('login');
 
 
 

@@ -30,14 +30,6 @@ Route::get('/', function () {
 Route::get('/email-template', function () {
     return view('emails.contact_email');
 });
-Route::get('/users', function () {
-    return response()->json(
-        [
-            'success'=> true,
-            'data'=> DB::table('roles')->select('*')->get()
-        ]
-    );
-});
 // Route::get('/edit/{id}', [StaffController::class,'edit']);
 // Route::post('/update/{id}', [StaffController::class, 'update'])->name('staff.update');
 // Route::post('/send-email', function (Request $request) {

@@ -125,7 +125,7 @@ class UserController extends Controller
             info($th);
             return response()->json([
                 'success' => false,
-                'message' => 'Failed to create user',
+                'message' => 'Failed to create user', $th->getMessage(),
                 'data' => []
             ]);
 
