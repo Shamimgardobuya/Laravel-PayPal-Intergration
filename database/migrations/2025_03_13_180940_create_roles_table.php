@@ -1,7 +1,9 @@
 <?php
 
+use Database\Seeders\RolesSeeder;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
@@ -16,6 +18,9 @@ return new class extends Migration
             $table->timestamps();
             $table->string('name')->nullable(false)->unique();
         });
+        Artisan::call('db:seed', [
+            '--class' => RolesSeeder::class
+        ]);
     }
 
     /**
