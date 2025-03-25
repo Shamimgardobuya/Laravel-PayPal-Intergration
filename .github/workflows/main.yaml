@@ -39,7 +39,12 @@ jobs:
           else
             echo "Symbolic link already exists."
           fi
-      - name: Set Database ENV Variables Manually
+      - name: Migrate DB
+        run: php artisan migrate --force
+        
+      - name: Seeding DB
+        run: php artisan db seed --force
+        
         env:
           APP_ENV: production
           DB_CONNECTION: pgsql
@@ -48,12 +53,6 @@ jobs:
           DB_DATABASE: ${{ secrets.DB_DATABASE }}
           DB_USERNAME: ${{ secrets.DB_USERNAME }}
           DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
-        
-      - name: Migrate DB
-        run: php artisan migrate --force
-        
-      - name: Seeding DB
-        run: php artisan db seed --force
 
       - name: Deploy to Vercel
         run: vercel deploy --prod --token=${{ secrets.VERCEL_TOKEN }}
