@@ -27,7 +27,7 @@ class StaffController extends Controller
         info($th);
         return response()->json(
             [
-                'message' => $th
+                'message' => $th->getMessage()
             ]
         );
 
@@ -77,7 +77,7 @@ class StaffController extends Controller
         } catch (\Throwable $th) {
             return response()->json(
                 [
-                    'message' => $th
+                    'message' => $th->getMessage()
                 ]
             );
         }
@@ -114,6 +114,11 @@ class StaffController extends Controller
             ], 200
         );
         } catch (\Throwable $th) {
+            return response()->json(
+                [
+                    'message' => $th->getMessage()
+                ]
+                );
 
         }
     }

@@ -206,7 +206,7 @@ class UserController extends Controller
                 info($th);
                 return response()->json([
                     'success' => false,
-                    'message' => 'Delete failed',
+                    'message' => 'Delete failed'. $th->getMessage(),
                     'data' => $find_user
                 ]);
                 
