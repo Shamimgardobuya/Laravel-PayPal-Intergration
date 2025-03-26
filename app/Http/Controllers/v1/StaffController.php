@@ -5,6 +5,7 @@ namespace App\Http\Controllers\v1;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\v1\StaffFormRequest;
 use App\Models\StaffModel;
+use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use PhpParser\Node\Stmt\TryCatch;
@@ -60,9 +61,16 @@ class StaffController extends Controller
                 ]
             );
             if ($request->file) {
-                $imageName = time().'.'.$request->file->extension();
-                $request->file->move(public_path('assets'), $imageName);
-                $new_staff->image_path = 'assets/'.$imageName;
+                $uploadedFileUrl = Cloudinary::upload($request->file('file')->getRealPath(), [
+                    'upload_preset' => env('CLOUDINARY_UPLOAD_PRESET'),
+                    'transformation' => [
+                        'width' => 300,   
+                        'height' => 300 
+
+                    ]
+                ])->getSecurePath();
+                
+                $new_staff->image_path = $uploadedFileUrl;
                 $new_staff->save();
 
             }

@@ -20,16 +20,5 @@ class StaffModel extends Model
         'image_path'
     ];
 
-    protected $appends = ['image'];
-
     protected $primaryKey = 'staff_id';
-
-    public function getImageAttribute() 
-    {
-        if ($this->image_path) {
-            return URL::to(env('APP_URL').'/'.$this->image_path);
-            
-        }
-        return null;
-    }
 }
