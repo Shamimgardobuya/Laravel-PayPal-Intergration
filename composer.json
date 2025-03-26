@@ -13,7 +13,6 @@
         "laravel/scout": "^10.13",
         "laravel/tinker": "^2.8",
         "mailgun/mailgun-php": "^3.0",
-        "meilisearch/meilisearch-php": "^1.13",
         "php-open-source-saver/jwt-auth": "^2.7",
         "srmklive/paypal": "^3.0"
     },
