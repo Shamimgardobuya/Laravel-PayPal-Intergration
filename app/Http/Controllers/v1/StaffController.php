@@ -90,37 +90,37 @@ class StaffController extends Controller
      */
     public function show(Request $request)
     {
-        try {
-            $staff = StaffModel::select(
-                'first_name', 'role','image_path',
+        // try {
+        //     $staff = StaffModel::select(
+        //         'first_name', 'role','image_path',
 
 
-            )->get();
-            $search = $request->search;
-            if ($search) {
+        //     )->get();
+        //     $search = $request->search;
+        //     if ($search) {
 
-                $staff = StaffModel::search($search)
-                ->select(
-                'first_name', 'role','image_path',
+        //         $staff = StaffModel::search($search)
+        //         ->select(
+        //         'first_name', 'role','image_path',
                 
 
-            )->get();
+        //     )->get();
                 
-            }
-            return response()->json(
-            [
-                'message' => 'Staff fetched successfully',
-                'data' => $staff
-            ], 200
-        );
-        } catch (\Throwable $th) {
-            return response()->json(
-                [
-                    'message' => $th->getMessage()
-                ]
-                );
+        //     }
+        //     return response()->json(
+        //     [
+        //         'message' => 'Staff fetched successfully',
+        //         'data' => $staff
+        //     ], 200
+        // );
+        // } catch (\Throwable $th) {
+        //     return response()->json(
+        //         [
+        //             'message' => $th->getMessage()
+        //         ]
+        //         );
 
-        }
+        // }
     }
 
     /**
