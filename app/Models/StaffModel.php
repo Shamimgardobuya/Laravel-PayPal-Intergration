@@ -9,7 +9,7 @@ use Laravel\Scout\Searchable;
 
 class StaffModel extends Model
 {
-    use HasFactory, Searchable;
+    use HasFactory;
     protected $table = 'staff';
     protected $fillable = [
         'first_name',

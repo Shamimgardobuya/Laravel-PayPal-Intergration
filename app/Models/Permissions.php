@@ -10,19 +10,19 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Permissions extends Model
 {
-    use HasFactory, Searchable;
+    use HasFactory;
 
     protected $table = 'permissions';
 
-    public function toSearchableArray()
-    {
+    // public function toSearchableArray()
+    // {
     
-        $array = $this->toArray();
+    //     $array = $this->toArray();
     
-        return $array;
+    //     return $array;
 
 
-    }
+    // }
 
     public function roles() : BelongsToMany
     {
