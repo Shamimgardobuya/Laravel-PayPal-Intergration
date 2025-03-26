@@ -7,6 +7,7 @@ use App\Http\Controllers\v1\StaffController;
 use App\Http\Controllers\v1\UserController;
 use App\Mail\NotifyOnEmailFailure;
 use App\Jobs\NotifyStaffJob;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
 
 /*
@@ -53,11 +54,27 @@ Route::middleware(['auth:api', 'role:Super Admin'])->group(function () {
 
     Route::post('/staff/create', [StaffController::class, 'store'])->name('store.staff');
 
-    Route::get('/staff/staff', [StaffController::class, 'show']);
-
     Route::patch( '/users/update/{id}',[ UserController::class, 'update'])->name('update_user');
     
     Route::delete('/users/delete/{id}',[ UserController::class, 'destroy'])->name('delete_user');
+
+    Route::get('/staff', function() {
+        try {
+            $staff = DB::table('staff')->select('first_name','last_name', 'email', 'phone', 'image')->get();
+            return response()->json([
+            'success' => true,
+            'message'=> 'Staff fetched successfully',
+            'data' => $staff
+            ], 200);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'success' => false,
+                'message'=> 'Error', $th->getMessage(),
+                'data' => []
+                ]);
+        }
+
+    } );
 });
 
 
