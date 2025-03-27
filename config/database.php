@@ -92,6 +92,15 @@ return [
             // 'encrypt' => env('DB_ENCRYPT', 'yes'),
             // 'trust_server_certificate' => env('DB_TRUST_SERVER_CERTIFICATE', 'false'),
         ],
+        'queue' => [
+        'driver' => 'pgsql',
+        'database' => 'POSTGRES_DATABASE',
+        'url' => env('POSTGRES_URL'),
+        'host' => env('POSTGRES_HOST', '127.0.0.1'),
+        'port' => '5432',
+        'username' => env('POSTGRES_USER'),
+        'password' => env('POSTGRES_PASSWORD')
+    ],
 
     ],
 

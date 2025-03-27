@@ -51,5 +51,27 @@ jobs:
           DB_USERNAME: ${{ secrets.DB_USERNAME }}
           DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
 
-      - name: Deploy to Vercel
-        run: vercel deploy --prod --token=${{ secrets.VERCEL_TOKEN }}
+      - name: Login to Docker Hub
+        run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
+      
+      - name: Pull latest Docker image
+        run: docker pull shamimsg3/payment-app:latest
+
+      - name: Stop existing container (if running)
+        run: docker stop payment-worker || true && docker rm payment-worker || true
+
+      - name: Run new worker container
+        run: |
+          docker run -d \
+            --name=payment-worker \
+            --restart=always \
+            -e QUEUE_CONNECTION=database \
+            -e POSTGRES_CONNECTION=pgsql \
+            -e POSTGRES_PORT=${{ secrets.POSTGRES_PORT }} \
+            -e POSTGRES_HOST=${{ secrets.POSTGRES_HOST }} \
+            -e POSTGRES_DATABASE=${{ secrets.POSTRGES_DATABASE }} \
+            -e POSTGRES_USERNAME=${{ secrets.POSTGRES_USERNAME }} \
+            -e POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }} \
+            shamimsg3/payment-app:latest
+        
+        
