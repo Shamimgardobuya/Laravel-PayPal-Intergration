@@ -73,5 +73,10 @@ jobs:
             -e POSTGRES_USERNAME=${{ secrets.POSTGRES_USERNAME }} \
             -e POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }} \
             shamimsg3/payment-app:latest
-        
+
+      - name: List running Docker containers
+        run: docker ps -a
+
+      - name: Show worker logs
+        run: docker logs payment-worker
         
