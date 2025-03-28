@@ -29,7 +29,7 @@ EXPOSE 8000
 
 # Start Laravel with queue worker
 # Copy Supervisor configuration
-COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
+COPY supervisor.conf /etc/supervisor/conf.d/supervisor.conf
 
 # Start Supervisor
-CMD ["supervisord", "-c", "/etc/supervisor/conf.d/supervisord.conf"]
+CMD ["supervisor", "-c", "/etc/supervisor/conf.d/supervisor.conf"]
