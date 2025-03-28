@@ -25,7 +25,8 @@ RUN composer install --no-dev --optimize-autoloader
 RUN chmod -R 775 storage bootstrap/cache
 
 # Expose port for Laravel
-EXPOSE 7000
+EXPOSE 8000
 
 # Start Laravel with queue worker
+
 CMD php artisan migrate --force && php artisan queue:work
