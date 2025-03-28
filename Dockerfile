@@ -26,6 +26,8 @@ RUN chmod -R 775 storage bootstrap/cache
 
 # Expose port for Laravel
 EXPOSE 8000
+# Install Supervisor
+RUN apt-get update && apt-get install -y supervisor
 
 # Start Laravel with queue worker
 # Copy Supervisor configuration
