@@ -1,9 +1,16 @@
-# Use PHP CLI image
-FROM php:8.2-cli
+# Use an official PHP image
+FROM php:8.2-fpm
 
-# Install dependencies
-RUN apt-get update && apt-get install -y unzip git curl libpq-dev \
-    && docker-php-ext-install pdo pdo_mysql
+# Install system dependencies
+RUN apt-get update && apt-get install -y \
+    unzip \
+    git \
+    curl \
+    libpq-dev \
+    && docker-php-ext-install pdo pdo_pgsql
+
+# Install Composer
+COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
 # Set working directory
 WORKDIR /var/www
@@ -11,9 +18,14 @@ WORKDIR /var/www
 # Copy project files
 COPY . .
 
-# Install composer dependencies
-RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+# Install dependencies
 RUN composer install --no-dev --optimize-autoloader
 
-# Set worker command
-CMD php artisan queue:work --daemon
+# Set permissions
+RUN chmod -R 775 storage bootstrap/cache
+
+# Expose port for Laravel
+EXPOSE 7000
+
+# Start Laravel with queue worker
+CMD php artisan migrate --force && php artisan queue:work
