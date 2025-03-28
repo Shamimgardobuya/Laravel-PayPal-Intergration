@@ -28,5 +28,8 @@ RUN chmod -R 775 storage bootstrap/cache
 EXPOSE 8000
 
 # Start Laravel with queue worker
+# Copy Supervisor configuration
+COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
-CMD php artisan migrate --force && php artisan queue:work
+# Start Supervisor
+CMD ["supervisord", "-c", "/etc/supervisor/conf.d/supervisord.conf"]
