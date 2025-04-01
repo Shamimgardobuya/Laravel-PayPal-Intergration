@@ -1,15 +1,6 @@
-# Using an official Node.js image as a base
-FROM node:18 AS build-stage
 
-WORKDIR /var/www
-COPY package.json package-lock.json ./
 
-RUN npm install
 
-RUN npm run build
-#setting permissions
-RUN chown -R www-data:www-data /var/www/public/build
-RUN chmod -R 775 /var/www/public/build
 
 # Using an official PHP image
 FROM php:8.2-fpm
@@ -21,6 +12,8 @@ RUN apt-get update && apt-get install -y \
     curl \
     libpq-dev \
     supervisor \
+    && curl -sL https://deb.nodesource.com/setup_18.x | bash - \
+    && apt-get install -y nodejs \
     && docker-php-ext-install pdo pdo_pgsql
 
 # Install Composer
@@ -29,8 +22,15 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 # Set working directory
 WORKDIR /var/www
 
-COPY --from=build-stage /var/www/public/build public/build  
+RUN npm install
+
+RUN npm run build
 # Copy project files
+
+#setting permissions
+# RUN chown -R www-data:www-data /var/www/public/build
+# RUN chmod -R 775 /var/www/public/build
+
 COPY . .
 
 # Install dependencies
