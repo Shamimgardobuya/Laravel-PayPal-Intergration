@@ -22,6 +22,8 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 # Set working directory
 WORKDIR /var/www
 
+COPY package.json package-lock.json ./
+
 RUN npm install
 
 RUN npm run build
