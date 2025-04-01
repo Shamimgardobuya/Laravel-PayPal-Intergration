@@ -24,6 +24,11 @@ RUN composer install --no-dev --optimize-autoloader
 
 # Set permissions
 RUN chmod -R 775 storage bootstrap/cache
+# Install dependencies
+RUN npm install
+
+# Build Tailwind CSS assets
+RUN npm run build
 
 # Expose port for Laravel
 EXPOSE 8000
