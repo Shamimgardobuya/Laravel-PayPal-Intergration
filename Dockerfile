@@ -1,21 +1,4 @@
-# Use an official Node.js image as a build stage
-FROM node:18 AS build-stage
-
-# Set working directory for Node.js build
-WORKDIR /var/www
-
-# Copy package files and install dependencies
-COPY package.json package-lock.json ./
-RUN npm install
-
-# Run the build command
-RUN npm run build
-
-# Set up permissions for the build output
-RUN chown -R www-data:www-data /var/www/public/build
-RUN chmod -R 775 /var/www/public/build
-
-# Use an official PHP image for the production server
+# Use an official PHP image as a base
 FROM php:8.2-fpm
 
 # Install system dependencies and PHP extensions
@@ -25,6 +8,8 @@ RUN apt-get update && apt-get install -y \
     curl \
     libpq-dev \
     supervisor \
+    && curl -sL https://deb.nodesource.com/setup_18.x | bash - \
+    && apt-get install -y nodejs \
     && docker-php-ext-install pdo pdo_pgsql
 
 # Install Composer
@@ -33,11 +18,17 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 # Set working directory for PHP
 WORKDIR /var/www
 
-# Copy files from build-stage (Node.js build)
-COPY --from=build-stage /var/www/public/build /var/www/public/build
+# Copy the frontend files and package.json/package-lock.json
+COPY package.json package-lock.json /var/www/
 
-# Copy the rest of the project files
-COPY . .
+# Install frontend dependencies (node_modules)
+RUN npm install
+
+# Copy the remaining project files
+COPY . /var/www/
+
+# Build the frontend assets
+RUN npm run build
 
 # Install PHP dependencies using Composer
 RUN composer install --no-dev --optimize-autoloader
