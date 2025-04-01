@@ -1,4 +1,15 @@
-# Use an official PHP image
+# Using an official Node.js image as a base
+FROM node:18 AS build-stage  # Replace with your preferred Node.js version
+
+WORKDIR /app
+
+COPY package.json package-lock.json ./
+
+RUN npm install
+
+RUN npm run build
+
+# Using an official PHP image
 FROM php:8.2-fpm
 
 # Install system dependencies
@@ -24,11 +35,7 @@ RUN composer install --no-dev --optimize-autoloader
 
 # Set permissions
 RUN chmod -R 775 storage bootstrap/cache
-# Install dependencies
-RUN npm install
 
-# Build Tailwind CSS assets
-RUN npm run build
 
 # Expose port for Laravel
 EXPOSE 8000
