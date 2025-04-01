@@ -7,6 +7,7 @@ RUN apt-get update && apt-get install -y \
     git \
     curl \
     libpq-dev \
+    supervisor \
     && docker-php-ext-install pdo pdo_pgsql
 
 # Install Composer
@@ -27,11 +28,11 @@ RUN chmod -R 775 storage bootstrap/cache
 # Expose port for Laravel
 EXPOSE 8000
 # Install Supervisor
-RUN apt-get update && apt-get install -y supervisor
+# RUN apt-get update && apt-get install -y supervisor
 
 # Start Laravel with queue worker
-# Copy Supervisor configuration
+# Copy Supervisor configuration file
 COPY supervisor.conf /etc/supervisor/conf.d/supervisor.conf
 
-# Start Supervisor
+# Start Supervisor (which runs Laravel & queue worker)
 CMD ["supervisord", "-c", "/etc/supervisor/conf.d/supervisor.conf"]
