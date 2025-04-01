@@ -1,13 +1,15 @@
 # Using an official Node.js image as a base
 FROM node:18 AS build-stage
 
-WORKDIR /app
-
+WORKDIR /var/www
 COPY package.json package-lock.json ./
 
 RUN npm install
 
 RUN npm run build
+#setting permissions
+RUN chown -R www-data:www-data /var/www/public/build
+RUN chmod -R 775 /var/www/public/build
 
 # Using an official PHP image
 FROM php:8.2-fpm
