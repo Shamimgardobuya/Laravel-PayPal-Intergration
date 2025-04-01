@@ -1,5 +1,5 @@
 # Using an official Node.js image as a base
-FROM node:18 AS build-stage  # Replace with your preferred Node.js version
+FROM node:18 AS build-stage
 
 WORKDIR /app
 
