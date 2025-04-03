@@ -8,7 +8,7 @@ RUN apt-get update && apt-get install -y \
     curl \
     libpq-dev \
     supervisor \
-    && apt-get install redis php8.2-redis
+    && apt-get install redis php8.2-redis \
     && curl -sL https://deb.nodesource.com/setup_18.x | bash - \
     && apt-get install -y nodejs \
     && docker-php-ext-install pdo pdo_pgsql
