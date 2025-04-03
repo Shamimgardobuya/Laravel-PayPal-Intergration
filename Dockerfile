@@ -18,6 +18,12 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 # Set working directory for PHP
 WORKDIR /var/www
 
+# Change ownership of the project files to www-data
+RUN chown -R www-data:www-data /var/www
+
+# Set the user to www-data to avoid permission issues
+USER www-data
+
 # Copy the frontend files and package.json/package-lock.json
 COPY package.json package-lock.json /var/www/
 
