@@ -16,13 +16,7 @@ RUN apt-get update && apt-get install -y \
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
 # Set working directory for PHP
-WORKDIR /var/www
-
-# Change ownership of the project files to www-data
-RUN chown -R www-data:www-data /var/www
-
-# Set the user to www-data to avoid permission issues
-USER www-data
+WORKDIR /var/www/html/payment_app
 
 # Copy the frontend files and package.json/package-lock.json
 COPY package.json package-lock.json /var/www/
@@ -31,7 +25,7 @@ COPY package.json package-lock.json /var/www/
 RUN npm install
 
 # Copy the remaining project files
-COPY . /var/www/
+COPY . .
 
 # Build the frontend assets
 RUN npm run build
@@ -46,7 +40,7 @@ RUN chmod -R 775 storage bootstrap/cache
 EXPOSE 8000
 
 # Install Supervisor (if needed for running queue workers)
-COPY supervisor.conf /etc/supervisor/conf.d/supervisor.conf
+COPY queue-worker.conf /etc/supervisor/conf.d/queue-worker.conf
 
 # Start Supervisor to manage Laravel and queue workers
-CMD ["supervisord", "-c", "/etc/supervisor/conf.d/supervisor.conf"]
+CMD ["supervisord", "-c", "/etc/supervisor/conf.d/queue-worker.conf"]
