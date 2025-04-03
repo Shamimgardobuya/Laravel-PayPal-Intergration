@@ -15,6 +15,7 @@
         "laravel/tinker": "^2.8",
         "mailgun/mailgun-php": "^3.0",
         "php-open-source-saver/jwt-auth": "^2.7",
+        "predis/predis": "^2.3",
         "srmklive/paypal": "^3.0"
     },
     "require-dev": {
