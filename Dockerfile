@@ -18,7 +18,7 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 WORKDIR /var/www/html/payment_app
 
 # Copy the frontend files and package.json/package-lock.json
-COPY package.json package-lock.json /var/www/
+COPY package.json package-lock.json /var/www/html/payment_app/
 
 # Install npm
 RUN npm install -g  npm
@@ -30,6 +30,9 @@ COPY . .
 
 # Build the frontend assets
 RUN npm run build
+
+# copy build directory to productin server
+COPY public/build /var/www/html/payment_app/
 
 # Install PHP dependencies using Composer
 RUN composer install --no-dev --optimize-autoloader
