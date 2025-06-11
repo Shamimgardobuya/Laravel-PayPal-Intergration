@@ -32,10 +32,6 @@ RUN npm run build
 COPY . .
 
 
-
-# copy build directory to productin server
-COPY public/build /var/www/html/payment_app/
-
 # Install PHP dependencies using Composer
 RUN composer install --no-dev --optimize-autoloader
 
