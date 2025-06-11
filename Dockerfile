@@ -18,18 +18,23 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 WORKDIR /var/www/html/payment_app
 
 # Copy the frontend files and package.json/package-lock.json
-COPY package.json package-lock.json /var/www/
+COPY package.json package-lock.json  ./
 
 # Install npm
 RUN npm install -g  npm
 # Install frontend dependencies (node_modules)
 RUN npm install
 
-# Build the frontend assets
-RUN npm run build
 
 # Copy the remaining project files
 COPY . .
+
+# Build the frontend assets
+RUN npm run build
+
+# Copy Vite build artifacts
+COPY --from=build /payment_app/public/build /var/www/html/public/build
+
 
 
 # Install PHP dependencies using Composer
