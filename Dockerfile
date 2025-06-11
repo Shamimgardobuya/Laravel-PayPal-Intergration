@@ -25,14 +25,12 @@ RUN npm install -g  npm
 # Install frontend dependencies (node_modules)
 RUN npm install
 
-# Copy the remaining project files
-COPY . .
 
 # Build the frontend assets
 RUN npm run build
+# Copy the remaining project files
+COPY . .
 
-# copy build directory to productin server
-COPY public/build /var/www/html/payment_app/
 
 # Install PHP dependencies using Composer
 RUN composer install --no-dev --optimize-autoloader
