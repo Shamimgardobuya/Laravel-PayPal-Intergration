@@ -35,7 +35,7 @@ COPY . .
 
 
 # Copy Vite build artifacts
-COPY  --from=build  /app/public/build  /var/www/html/payment_app/public/build
+COPY  --from=build  /app/public/build  /var/www/html/public/build
 
 
 
