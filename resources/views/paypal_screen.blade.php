@@ -187,9 +187,9 @@ document.addEventListener("DOMContentLoaded", function () {
                 },
                 body: JSON.stringify({ amount: amount , item: document.getElementById('item').value })
                     })
-                    .then(response => response.json())
-                    .then(order => order.id)
-                    .catch( err=> console.log(err));
+                    .then((response) => {return response.json()})
+                    .then((order) => {return order.id})
+                    .catch( err=> console.log(err,JSON.stringify({ amount: amount , item: document.getElementById('item').value })));
         
             },
             onApprove : async function (data, actions) {

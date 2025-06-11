@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Mail;
+use Inertia\Inertia;
 
 /*
 |--------------------------------------------------------------------------
@@ -22,13 +23,53 @@ use Illuminate\Support\Facades\Mail;
 |
 */
 
-Route::get('/', function () {
-    return view('paypal_screen');
+Route::get('/paypal', function () {
+    return Inertia::render('PaypalScreen');
 });
+Route::get('/programs', function () {
+    return Inertia::render('Programs');
+});
+Route::get('/gallery', function () {
+    return Inertia::render('Gallery');
+});
+
+
+
+Route::get('/home', function () {
+    return Inertia::render('HomeScreen');
+});
+Route::get('/values', function () {
+    return Inertia::render('Values');
+});
+Route::get('/token', function (Request $request) {
+    return $request->session()->token();
+});
+
 // Route::get('/create-staff-template', [StaffController::class, 'index']);
-// Route::get('/all-staff', [StaffController::class, 'show']);
+Route::get('/staff', function() {
+        try {
+            
+            $staff = DB::table('staff')->select('first_name','last_name', 'email', 'phone', 'image_path')->get();
+            return response()->json([
+            'success' => true,
+            'message'=> 'Staff fetched successfully',
+            'data' => $staff
+            ], 200);
+        } catch (\Throwable $th) {
+            return response()->json([
+                'success' => false,
+                'message'=> 'Error', $th->getMessage(),
+                'data' => []
+                ]);
+        }
+
+    } );
+    
 Route::get('/email-template', function () {
     return view('emails.contact_email');
+});
+Route::get('/contact', function() {
+    return Inertia::render('ContactScreen');
 });
 // Route::get('/edit/{id}', [StaffController::class,'edit']);
 // Route::post('/update/{id}', [StaffController::class, 'update'])->name('staff.update');
@@ -62,17 +103,18 @@ Route::get('/cancel-payment', [PayPalPaymentController::class,'paymentCancel'])-
 Route::post('/payment-success', [PayPalPaymentController::class, 'capturePayment'])->name('success.payment');
 
 Route::get('/success', function () {
-    return view('success');
+    return Inertia::render('PaymentSuccess');
+
 })->name('success');
 
 Route::get('/cancel', function () {
-    return view('cancel');
+    return Inertia::render('PaymentCancelled');
 })->name('cancel');
 
 
 
 
-Route::get('/token',function (Request $request) {
+Route::get('/csrf-token',function (Request $request) {
     $token = $request->session()->token();
     $token = csrf_token();
     return response()->json([

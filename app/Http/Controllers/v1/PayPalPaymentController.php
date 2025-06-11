@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use App\Services\PayPalService;
 use Exception;
 use DB;
+use Illuminate\Support\Facades\DB as FacadesDB;
+use Illuminate\Support\Facades\Log;
 
 class PayPalPaymentController extends Controller
 {
@@ -17,9 +19,15 @@ class PayPalPaymentController extends Controller
     }
     public function createOrder(Request $request) {
         try {
-            $amount = $request->input('amount');
+            $amount = $request->amount;
+            Log::info(json_encode(array($this->paypal_service->getAccessToken())));
+
             $order = $this->paypal_service->createOrder($amount);
+                
+
+            // echo(json_encode($order));
             if (!$order || !isset($order['id'])) {
+                print_r(json_encode($order));
                 return response()->json(['error' => 'Failed to create PayPal order'], 500);
             }
             
@@ -27,6 +35,7 @@ class PayPalPaymentController extends Controller
             
 
         } catch (\Throwable $th) {
+            print_r(json_encode($th));
             return response()->json([
                 'error' => 'Failed to create Paypal order',
                 'reason' => $th->getMessage()
@@ -49,15 +58,15 @@ class PayPalPaymentController extends Controller
 
         try {
             $orderId = $request->order_id;
-            info(['Order ID' => $orderId, 'Request Data' => $request->all()]);
+            Log::info(json_encode($request->all()));
             $payment = $this->paypal_service->capturePayment($orderId);
     
             if (!$payment || !isset($payment['status'])) {
-                info(['Payment' => $payment]);
+                // info(['Payment' => $payment]);
                 return response()->json(['error' => 'Payment capture failed'], 500);
             }
 
-            DB::table('payment_tracking')->insert([
+            FacadesDB::table('payment_tracking')->insert([
                 'transaction_id' => $payment['purchase_units'][0]['payments']['captures'][0]['id'],
                 'amount' => $payment['purchase_units'][0]['payments']['captures'][0]['amount']['value'],
                 'status' => $payment['status'],

@@ -11,8 +11,16 @@
         "vite": "^5.0.0"
     },
     "dependencies": {
+        "@inertiajs/inertia": "^0.11.1",
+        "@inertiajs/inertia-react": "^0.8.1",
+        "@inertiajs/react": "^2.0.11",
         "@tailwindcss/vite": "^4.0.14",
         "@vercel/postgres": "^0.10.0",
+        "leaflet": "^1.9.4",
+        "react": "^19.0.0-rc.1",
+        "react-dom": "^19.0.0",
+        "react-leaflet": "^5.0.0-rc.2",
+        "react-router-dom": "^6.30.1",
         "tailwindcss": "^4.0.14"
     }
 }

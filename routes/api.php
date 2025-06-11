@@ -41,7 +41,7 @@ Route::post('/send-email', function (Request $request) {
     } catch (\Throwable $th) {
         info($th);
 
-        Mail::to(env('MAIL_FROM_ADDRESS'))->send(new NotifyOnEmailFailure(json_encode($th)));
+        Mail::to(config('mail.from.address'))->send(new NotifyOnEmailFailure(json_encode($th)));
         return response($th->getMessage(), 422);
     }
 })->name('send-email');
@@ -88,7 +88,7 @@ Route::post('/users/login',[ UserController::class, 'loginUser'])->name('login')
 
 
 
-
+// ugz!aJXDE7e8kDr
 
 
 

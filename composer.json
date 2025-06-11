@@ -9,6 +9,7 @@
         "cloudinary-labs/cloudinary-laravel": "^2.3",
         "guzzlehttp/guzzle": "^7.9",
         "http-interop/http-factory-guzzle": "^1.2",
+        "inertiajs/inertia-laravel": "^2.0",
         "laravel/framework": "^10.10",
         "laravel/sanctum": "^3.3",
         "laravel/scout": "^10.13",
@@ -16,6 +17,7 @@
         "mailgun/mailgun-php": "^3.0",
         "php-open-source-saver/jwt-auth": "^2.7",
         "predis/predis": "^2.3",
+        "react/react": "^1.0",
         "srmklive/paypal": "^3.0"
     },
     "require-dev": {
