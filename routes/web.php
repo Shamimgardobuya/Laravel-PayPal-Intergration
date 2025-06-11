@@ -34,7 +34,6 @@ Route::get('/email-template', function () {
 // Route::post('/update/{id}', [StaffController::class, 'update'])->name('staff.update');
 // Route::post('/send-email', function (Request $request) {
 //     try {
-//         var_dump($request->all());
 //         dispatch(new NotifyStaffJob($request->name, $request->email, $request->subject, $request->message));
 //         return response()->json([
 //             'message' => "Success, Email has been queued for processing"
