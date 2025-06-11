@@ -20,6 +20,8 @@ WORKDIR /var/www/html/payment_app
 # Copy the frontend files and package.json/package-lock.json
 COPY package.json package-lock.json /var/www/
 
+# Install npm
+RUN npm install -g  npm
 # Install frontend dependencies (node_modules)
 RUN npm install
 
