@@ -1,4 +1,15 @@
 # Use an official PHP image as a base
+
+# Stage 1: Build frontend assets
+FROM node:18 AS build
+WORKDIR /app
+COPY package.json package-lock.json ./
+RUN npm install
+COPY . .
+RUN npm run build
+
+
+#stage2
 FROM php:8.2-fpm
 
 # Install system dependencies and PHP extensions
@@ -17,23 +28,14 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 # Set working directory for PHP
 WORKDIR /var/www/html/payment_app
 
-# Copy the frontend files and package.json/package-lock.json
-COPY package.json package-lock.json  ./
-
-# Install npm
-RUN npm install -g  npm
-# Install frontend dependencies (node_modules)
-RUN npm install
 
 
 # Copy the remaining project files
 COPY . .
 
-# Build the frontend assets
-RUN npm run build
 
 # Copy Vite build artifacts
-COPY --from=build /payment_app/public/build /var/www/html/public/build
+COPY  --from=build  /app/public/build  /var/www/html/payment_app/public/build
 
 
 
