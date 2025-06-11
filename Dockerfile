@@ -44,11 +44,18 @@ RUN composer install --no-dev --optimize-autoloader
 # Set permissions for PHP and storage directories
 RUN chmod -R 775 storage bootstrap/cache
 
-# Expose port 8000 for Laravel
-EXPOSE 8000
+
+
+
+# Copy Nginx config
+COPY ./conf/nginx/nginx-site.conf /etc/nginx/sites-available/default
+
 
 # Install Supervisor (if needed for running queue workers)
 COPY queue-worker.conf /etc/supervisor/conf.d/queue-worker.conf
+
+# Expose port 8000 for Laravel
+EXPOSE 8000
 
 # Start Supervisor to manage Laravel and queue workers
 CMD ["supervisord", "-c", "/etc/supervisor/conf.d/queue-worker.conf"]
