@@ -55,7 +55,7 @@ COPY ./conf/nginx/nginx-site.conf /etc/nginx/sites-available/default
 COPY queue-worker.conf /etc/supervisor/conf.d/queue-worker.conf
 
 # Expose port 8000 for Laravel
-EXPOSE 8000
+EXPOSE 10000
 
 # Start Supervisor to manage Laravel and queue workers
 CMD ["supervisord", "-c", "/etc/supervisor/conf.d/queue-worker.conf"]
