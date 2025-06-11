@@ -33,7 +33,10 @@ Route::get('/gallery', function () {
     return Inertia::render('Gallery');
 });
 
+Route::get('/', function() {
+        return Inertia::render('HomeScreen');
 
+});
 
 Route::get('/home', function () {
     return Inertia::render('HomeScreen');
