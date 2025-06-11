@@ -1,55 +1,19 @@
-# Use an official PHP image as a base
+# Dockerfile
+# Use base image for container
+FROM richarvey/nginx-php-fpm:3.1.6
 
-# Stage 1: Build frontend assets
-FROM node:18 AS build
-WORKDIR /app
-COPY package.json package-lock.json ./
-RUN npm install
+# Copy all application code into  Docker container
 COPY . .
+
+RUN apk update
+
+# Install the `npm` package
+RUN apk add --no-cache npm
+
+# Install NPM dependencies
+RUN npm install
+
+# Build Vite assets
 RUN npm run build
 
-
-#stage2
-FROM php:8.2-fpm
-
-# Install system dependencies and PHP extensions
-RUN apt-get update && apt-get install -y \
-    unzip \
-    git \
-    curl \
-    libpq-dev \
-    supervisor \
-    && curl -sL https://deb.nodesource.com/setup_18.x | bash - \
-    && apt-get install -y nodejs \
-    && docker-php-ext-install pdo pdo_pgsql
-# Install Composer
-COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
-
-# Set working directory for PHP
-WORKDIR /var/www/html/payment_app
-
-
-
-# Copy the remaining project files
-COPY . .
-
-
-# Copy Vite build artifacts
-COPY  --from=build  /app/public/build  /var/www/html/public/build
-
-
-
-# Install PHP dependencies using Composer
-RUN composer install --no-dev --optimize-autoloader
-
-# Set permissions for PHP and storage directories
-RUN chmod -R 775 storage bootstrap/cache
-
-# Expose port 8000 for Laravel
-EXPOSE 8000
-
-# Install Supervisor (if needed for running queue workers)
-COPY queue-worker.conf /etc/supervisor/conf.d/queue-worker.conf
-
-# Start Supervisor to manage Laravel and queue workers
-CMD ["supervisord", "-c", "/etc/supervisor/conf.d/queue-worker.conf"]
+CMD ["/start.sh"]
