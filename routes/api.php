@@ -66,7 +66,7 @@ Route::middleware(['auth:api', 'role:Super Admin'])->group(function () {
 
     Route::get('/staff', function() {
         try {
-            $staff = DB::table('staff')->select('first_name','last_name', 'email', 'phone', 'image')->get();
+            $staff = DB::table('staff')->select('first_name','last_name', 'email', 'phone', 'image_path')->get();
             return response()->json([
             'success' => true,
             'message'=> 'Staff fetched successfully',
