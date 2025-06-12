@@ -54,7 +54,7 @@ Route::post('/send-email', function (Request $request) {
 
 Route::get('/staff', function() {
         try {
-            $staff = DB::table('staff')->select('first_name','last_name', 'email', 'phone', 'image_path')->get();
+            $staff = DB::table('staff')->select('first_name','last_name', 'email', 'phone', 'image_path', 'role')->get();
             return response()->json([
             'success' => true,
             'message'=> 'Staff fetched successfully',
@@ -72,6 +72,7 @@ Route::get('/staff', function() {
 
 
 Route::middleware(['auth:api', 'role:Super Admin'])->group(function () {
+    // dd("authoried");
         
     Route::post('/staff/update/{id}', [StaffController::class, 'update'])->name('staff.update');
 

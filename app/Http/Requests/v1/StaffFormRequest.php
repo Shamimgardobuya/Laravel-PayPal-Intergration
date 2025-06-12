@@ -32,8 +32,8 @@ class StaffFormRequest extends FormRequest
             'first_name'=> 'required|string|max:25',
             'last_name'=> 'required|string|max:25',
             'role'=> 'required|string|max:25',
-            'email'=> 'sometimes|email|unique:staff',
-            'phone'=> 'sometimes|string|unique:staff',
+            'email'=> 'sometimes|email',
+            'phone'=> 'sometimes|string',
             'file' => 'sometimes|image|mimes:png,jpg,jpeg,gif|max:20248'
         ];
     }
