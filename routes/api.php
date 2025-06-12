@@ -52,19 +52,7 @@ Route::post('/send-email', function (Request $request) {
     }
 })->name('send-email');
 
-
-
-Route::middleware(['auth:api', 'role:Super Admin'])->group(function () {
-        
-    Route::post('/staff/update/{id}', [StaffController::class, 'update'])->name('staff.update');
-
-    Route::post('/staff/create', [StaffController::class, 'store'])->name('store.staff');
-
-    Route::patch( '/users/update/{id}',[ UserController::class, 'update'])->name('update_user');
-    
-    Route::delete('/users/delete/{id}',[ UserController::class, 'destroy'])->name('delete_user');
-
-    Route::get('/staff', function() {
+Route::get('/staff', function() {
         try {
             $staff = DB::table('staff')->select('first_name','last_name', 'email', 'phone', 'image_path')->get();
             return response()->json([
@@ -81,6 +69,19 @@ Route::middleware(['auth:api', 'role:Super Admin'])->group(function () {
         }
 
     } );
+
+
+Route::middleware(['auth:api', 'role:Super Admin'])->group(function () {
+        
+    Route::post('/staff/update/{id}', [StaffController::class, 'update'])->name('staff.update');
+
+    Route::post('/staff/create', [StaffController::class, 'store'])->name('store.staff');
+
+    Route::patch( '/users/update/{id}',[ UserController::class, 'update'])->name('update_user');
+    
+    Route::delete('/users/delete/{id}',[ UserController::class, 'destroy'])->name('delete_user');
+
+    
 });
 
 
