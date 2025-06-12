@@ -27,8 +27,14 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 
 
+Route::post('/handle-payment', [PayPalPaymentController::class, 'createOrder'])->name('make.payment');
 
+Route::get('/cancel-payment', [PayPalPaymentController::class,'paymentCancel'])->name('cancel.payment');
 
+Route::post('/payment-success', [PayPalPaymentController::class, 'capturePayment'])->name('success.payment');
+Route::get('/paypal', function () {
+    return view('paypal_screen');
+});
 
 Route::post('/send-email', function (Request $request) {
     try {
@@ -41,7 +47,7 @@ Route::post('/send-email', function (Request $request) {
     } catch (\Throwable $th) {
         info($th);
 
-        Mail::to(env('MAIL_FROM_ADDRESS'))->send(new NotifyOnEmailFailure(json_encode($th)));
+        Mail::to(config('mail.from'))->send(new NotifyOnEmailFailure(json_encode($th)));
         return response($th->getMessage(), 422);
     }
 })->name('send-email');

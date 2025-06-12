@@ -22,9 +22,7 @@ use Illuminate\Support\Facades\Mail;
 |
 */
 
-Route::get('/', function () {
-    return view('paypal_screen');
-});
+
 // Route::get('/create-staff-template', [StaffController::class, 'index']);
 // Route::get('/all-staff', [StaffController::class, 'show']);
 Route::get('/email-template', function () {
@@ -54,11 +52,7 @@ Route::get('/email-template', function () {
 // Route::post('/store-staff', [StaffController::class, 'store'])->name('store.staff');
 
 
-Route::post('/handle-payment', [PayPalPaymentController::class, 'createOrder'])->name('make.payment');
 
-Route::get('/cancel-payment', [PayPalPaymentController::class,'paymentCancel'])->name('cancel.payment');
-
-Route::post('/payment-success', [PayPalPaymentController::class, 'capturePayment'])->name('success.payment');
 
 Route::get('/success', function () {
     return view('success');
@@ -71,14 +65,7 @@ Route::get('/cancel', function () {
 
 
 
-Route::get('/token',function (Request $request) {
-    $token = $request->session()->token();
-    $token = csrf_token();
-    return response()->json([
-        'token' => $token 
-    ]);
 
-});
 
 Route::get('/run-migrations', function () {
     Artisan::call('migrate', ['--force' => true]);
