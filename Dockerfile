@@ -39,11 +39,11 @@ RUN mv .env.prod .env
 
 RUN php artisan optimize
 
-FROM nginx:1.10-alpine AS stage2
+FROM nginx:1.10-alpine AS buildNginx
 
 ADD vhost.conf /etc/nginx/conf.d/default.conf
 
-COPY    --from=stage2    public /var/www/public
+COPY  public /var/www/public
 
 
 # Expose port 8000 for Laravel
