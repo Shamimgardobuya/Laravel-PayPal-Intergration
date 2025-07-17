@@ -1,5 +1,5 @@
 __LittleLions SchoolManagementApp__
-
+__FRONTEND_REPO__ => https://github.com/Shamimgardobuya/Little-Lions-JS.git
 This is a Laravel-based web application that integrates PayPal for processing donations to a school. Additionally, it provides API endpoints for managing users and staff within the school system.
 
 __Getting Started__
