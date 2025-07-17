@@ -32,9 +32,6 @@ npm install
 npm run dev
 ```
   __REST API Routes__
-1. Making a Payment
-To make a payment, visit:
-📍 http://localhost:8000/
 
 2. Staff Management
 Create a Staff Member
@@ -99,7 +96,10 @@ Delete a User
 Endpoint: DELETE http://localhost:8000/api/users/delete/{id}
 
 **Notes**
+To make payment, you'll need to visit the web route https://laravel-paypal-intergration.onrender.com/api/paypal , i should have removed the api parameter for this route 😅 
 Ensure that environment variables (e.g., database credentials, PayPal API keys) are correctly set in the .env file.
 
 Use the provided authentication token when making requests to protected API endpoints.
+
+
 
