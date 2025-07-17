@@ -1,4 +1,4 @@
-__Laravel PayPal Integration Web App__
+__LittleLions SchoolManagementApp__
 
 This is a Laravel-based web application that integrates PayPal for processing donations to a school. Additionally, it provides API endpoints for managing users and staff within the school system.
 
