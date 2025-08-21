@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Services\PayPalService;
 use Exception;
-use DB;
+use Illuminate\Support\Facades\DB;
 
 class PayPalPaymentController extends Controller
 {

@@ -9,6 +9,9 @@ use App\Mail\NotifyOnEmailFailure;
 use App\Jobs\NotifyStaffJob;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Http\Response;
+use Carbon\Carbon;
+use App\Http\Controllers\v1\MpesaPaymentController;
 
 /*
 |--------------------------------------------------------------------------
@@ -25,6 +28,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+Route::post('/mpesa_payment', [MpesaPaymentController::class, 'index'])->name('callback');
 
 
 Route::post('/handle-payment', [PayPalPaymentController::class, 'createOrder'])->name('make.payment');
@@ -36,7 +40,7 @@ Route::get('/paypal', function () {
     return view('paypal_screen');
 });
 
-Route::post('/send-email', function (Request $request) {
+Route::middleware('throttle:api')->post('/send-email', function (Request $request) {
     try {
         dispatch(new NotifyStaffJob($request->name, $request->email, $request->subject, $request->message));
         return response()->json([
@@ -52,15 +56,23 @@ Route::post('/send-email', function (Request $request) {
     }
 })->name('send-email');
 
-Route::get('/staff', function() {
+Route::get('/staff', function(Request $request) {
         try {
             $staff = DB::table('staff')->select('first_name','last_name', 'email', 'phone', 'image_path', 'role')->get();
+            // $last_modified = now()->subSeconds(5);
+            // $ifModifiedSince = Carbon::parse($request->header('If-Modified-Since'));
+            // if ($last_modified->lte($ifModifiedSince)) {
+            //     return response('',304);
+
+            // }
+
             return response()->json([
             'success' => true,
             'message'=> 'Staff fetched successfully',
-            'data' => $staff
+            'data' => $staff,
             ], 200);
         } catch (\Throwable $th) {
+            info('dat'.$th);
             return response()->json([
                 'success' => false,
                 'message'=> 'Error', $th->getMessage(),
@@ -71,7 +83,7 @@ Route::get('/staff', function() {
     } );
 
 
-Route::middleware(['auth:api', 'role:Super Admin'])->group(function () {
+Route::middleware(['auth:api', 'role:Super Admin', 'throttle:api'])->group(function () {
     // dd("authoried");
         
     Route::post('/staff/update/{id}', [StaffController::class, 'update'])->name('staff.update');

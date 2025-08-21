@@ -63,6 +63,19 @@ Route::get('/cancel', function () {
 })->name('cancel');
 
 
+Route::get('/validate', function() {
+    $dt = null;
+    return view('validate')->with('data', $dt);
+
+})->name('validate');
+
+Route::get('/callback', function() {
+    $dt = null;
+    return view('callback');
+
+})->name('callback');
+
+
 
 
 
