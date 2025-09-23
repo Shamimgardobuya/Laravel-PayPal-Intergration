@@ -1,58 +1,49 @@
-# Use an official PHP image as a base
+# Use the official PHP-FPM image
 FROM php:8.2-fpm
 
-
-
-COPY composer.lock composer.json /var/www/
-
-COPY database /var/www/database
-
-WORKDIR /var/www
-#install system dependancies 
-
+# Install necessary packages for both Nginx and PHP
 RUN apt-get update && apt-get install -y \
-    unzip \
+    nginx \
     git \
-    curl \
-    libpq-dev \
-    supervisor \
-    && curl -sL https://deb.nodesource.com/setup_18.x | bash - \
-    && apt-get install -y nodejs \
-    && docker-php-ext-install pdo pdo_pgsql \
-    && rm -rf /var/lib/apt/lists/*
-# Install Composer
-COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
+    unzip \
+    nodejs npm \
+    libzip-dev \
+    && docker-php-ext-install pdo_mysql zip
 
-# Copy the frontend files and package.json/package-lock.json
-COPY   package.json package-lock.json /var/www/
+# Set the working directory for the application
+WORKDIR /var/www/html
 
-COPY . /var/www
+# Copy the application source code into the container
+COPY . .
 
-RUN composer install 
+# Set permissions for the www-data user
+RUN chown -R www-data:www-data /var/www/html
 
-RUN chown -R www-data:www-data \
-        /var/www/storage \
-        /var/www/bootstrap/cache
+# Image and Laravel configuration variables
+ENV APP_ENV production
+ENV APP_DEBUG false
+ENV LOG_CHANNEL stderr
+ENV COMPOSER_ALLOW_SUPERUSER 1
+ENV WEBROOT /var/www/html/public
 
-RUN mv .env.prod .env
+RUN rm /etc/nginx/sites-enabled/default || true
+# Copy Nginx config and build script
+COPY ./docker/nginx/nginx.conf /etc/nginx/conf.d/default.conf
+COPY ./render-build.sh /usr/local/bin/render-build.sh
 
-
-RUN php artisan optimize
-
-FROM nginx:1.10-alpine AS buildNginx
-
-ADD vhost.conf /etc/nginx/conf.d/default.conf
-
-COPY  public /var/www/public
-
-
-# Expose port 8000 for Laravel
+# Install Composer and run build script
+RUN curl -sS https://getcomposer.org/installer | php -- \
+    --install-dir=/usr/local/bin --filename=composer
+RUN chmod +x /usr/local/bin/render-build.sh \
+    && /usr/local/bin/render-build.sh
+    
+RUN ls -la /var/www/html/public/index.php
+# Expose port 8000 to the host machine
 EXPOSE 8000
 
-# Install Supervisor (if needed for running queue workers)
-COPY queue-worker.conf /etc/supervisor/conf.d/queue-worker.conf
+# Copy and set the entrypoint script
+COPY docker-entrypoint.sh /usr/local/bin/
+RUN chmod +x /usr/local/bin/docker-entrypoint.sh
 
-# Start Supervisor to manage Laravel and queue workers
-CMD ["supervisord", "-c", "/etc/supervisor/conf.d/queue-worker.conf"]
-
-
+# Use the entrypoint script to start the services
+CMD ["/usr/local/bin/docker-entrypoint.sh"]

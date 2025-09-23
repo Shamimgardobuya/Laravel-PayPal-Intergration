@@ -1,0 +1,40 @@
+version: '3.8'
+
+services:
+  php:
+    build:
+      context: .
+      dockerfile: docker/php-fpm.Dockerfile
+    container_name: laravel_php_app
+    volumes:
+      - ./src:/var/www/html
+    networks:
+      - laravel_net
+
+  nginx:
+    build:
+      context: .
+      dockerfile: docker/nginx.Dockerfile
+    container_name: laravel_nginx
+    ports:
+      - "8070:80"
+    depends_on:
+      - php
+    networks:
+      - laravel_net
+
+  db:
+    image: mysql:8
+    container_name: laravel_db
+    restart: always
+    environment:
+      MYSQL_DATABASE: school_db
+      MYSQL_ROOT_PASSWORD: root
+    ports:
+      - "3308:3306"
+    networks:
+      - laravel_net
+
+networks:
+  laravel_net:
+    driver: bridge
