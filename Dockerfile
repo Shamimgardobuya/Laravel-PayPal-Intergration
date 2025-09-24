@@ -8,6 +8,7 @@ RUN apt-get update && apt-get install -y \
     unzip \
     nodejs npm \
     libzip-dev \
+    libpq-dev \
     && docker-php-ext-install pdo_pgsql zip
 
 # Set the working directory for the application
