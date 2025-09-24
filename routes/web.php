@@ -73,7 +73,7 @@ Route::get('/callback', function() {
     $dt = null;
     return view('callback');
 
-})->name('callback');
+})->name('callback_web');
 
 
 
