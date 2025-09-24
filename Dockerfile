@@ -8,7 +8,7 @@ RUN apt-get update && apt-get install -y \
     unzip \
     nodejs npm \
     libzip-dev \
-    && docker-php-ext-install pdo_mysql zip
+    && docker-php-ext-install pdo_pgsql zip
 
 # Set the working directory for the application
 WORKDIR /var/www/html
