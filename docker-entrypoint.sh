@@ -10,10 +10,8 @@ php artisan view:clear
 php artisan config:cache
 php artisan route:cache
 php artisan view:cache
+php artisan inspector:test
 
-
-# Linking Laravel log to stdout so Render shows it
-ln -sf /dev/stdout /var/www/html/storage/logs/laravel.log
 
 echo "Starting PHP-FPM..."
 php-fpm -D
