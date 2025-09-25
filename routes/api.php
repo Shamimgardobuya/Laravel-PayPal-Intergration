@@ -28,16 +28,71 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::post('/mpesa_payment', [MpesaPaymentController::class, 'index'])->name('callback');
+Route::middleware('cors')->group(function () {
+    Route::post('/mpesa_payment', [MpesaPaymentController::class, 'index'])->name('callback');
+    Route::post('/handle-payment', [PayPalPaymentController::class, 'createOrder'])->name('make.payment');
+
+    Route::get('/cancel-payment', [PayPalPaymentController::class,'paymentCancel'])->name('cancel.payment');
+
+    Route::post('/payment-success', [PayPalPaymentController::class, 'capturePayment'])->name('success.payment');
+    Route::get('/paypal', function () {
+        return view('paypal_screen');
+    });
 
 
-Route::post('/handle-payment', [PayPalPaymentController::class, 'createOrder'])->name('make.payment');
+    Route::get('/staff', function(Request $request) {
+            try {
+                $staff = DB::table('staff')->select('first_name','last_name', 'email', 'phone', 'image_path', 'role')->get();
+                // $last_modified = now()->subSeconds(5);
+                // $ifModifiedSince = Carbon::parse($request->header('If-Modified-Since'));
+                // if ($last_modified->lte($ifModifiedSince)) {
+                //     return response('',304);
 
-Route::get('/cancel-payment', [PayPalPaymentController::class,'paymentCancel'])->name('cancel.payment');
+                // }
 
-Route::post('/payment-success', [PayPalPaymentController::class, 'capturePayment'])->name('success.payment');
-Route::get('/paypal', function () {
-    return view('paypal_screen');
+                return response()->json([
+                'success' => true,
+                'message'=> 'Staff fetched successfully',
+                'data' => $staff,
+                ], 200);
+            } catch (\Throwable $th) {
+                info('dat'.$th);
+                return response()->json([
+                    'success' => false,
+                    'message'=> 'Error', $th->getMessage(),
+                    'data' => []
+                    ]);
+            }
+
+        } );
+
+
+    Route::middleware(['auth:api', 'role:Super Admin', 'throttle:api'])->group(function () {
+        // dd("authoried");
+            
+        Route::post('/staff/update/{id}', [StaffController::class, 'update'])->name('staff.update');
+
+        Route::post('/staff/create', [StaffController::class, 'store'])->name('store.staff');
+
+        Route::patch( '/users/update/{id}',[ UserController::class, 'update'])->name('update_user');
+        
+        Route::delete('/users/delete/{id}',[ UserController::class, 'destroy'])->name('delete_user');
+
+        
+    });
+
+
+    //Users Route
+
+    Route::get('/users',[ UserController::class, 'index'])->name('get_users');
+
+    Route::post('/users/create',[ UserController::class, 'store'])->name('create_user');
+
+    Route::post('/users/login',[ UserController::class, 'loginUser'])->name('login');
+
+
+
+
 });
 
 Route::middleware('throttle:api')->post('/send-email', function (Request $request) {
@@ -55,59 +110,6 @@ Route::middleware('throttle:api')->post('/send-email', function (Request $reques
         return response($th->getMessage(), 422);
     }
 })->name('send-email');
-
-Route::get('/staff', function(Request $request) {
-        try {
-            $staff = DB::table('staff')->select('first_name','last_name', 'email', 'phone', 'image_path', 'role')->get();
-            // $last_modified = now()->subSeconds(5);
-            // $ifModifiedSince = Carbon::parse($request->header('If-Modified-Since'));
-            // if ($last_modified->lte($ifModifiedSince)) {
-            //     return response('',304);
-
-            // }
-
-            return response()->json([
-            'success' => true,
-            'message'=> 'Staff fetched successfully',
-            'data' => $staff,
-            ], 200);
-        } catch (\Throwable $th) {
-            info('dat'.$th);
-            return response()->json([
-                'success' => false,
-                'message'=> 'Error', $th->getMessage(),
-                'data' => []
-                ]);
-        }
-
-    } );
-
-
-Route::middleware(['auth:api', 'role:Super Admin', 'throttle:api'])->group(function () {
-    // dd("authoried");
-        
-    Route::post('/staff/update/{id}', [StaffController::class, 'update'])->name('staff.update');
-
-    Route::post('/staff/create', [StaffController::class, 'store'])->name('store.staff');
-
-    Route::patch( '/users/update/{id}',[ UserController::class, 'update'])->name('update_user');
-    
-    Route::delete('/users/delete/{id}',[ UserController::class, 'destroy'])->name('delete_user');
-
-    
-});
-
-
-//Users Route
-
-Route::get('/users',[ UserController::class, 'index'])->name('get_users');
-
-Route::post('/users/create',[ UserController::class, 'store'])->name('create_user');
-
-Route::post('/users/login',[ UserController::class, 'loginUser'])->name('login');
-
-
-
 
 
 
