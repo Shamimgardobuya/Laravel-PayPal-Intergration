@@ -28,19 +28,18 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::middleware('cors')->group(function () {
-    Route::post('/mpesa_payment', [MpesaPaymentController::class, 'index'])->name('callback');
-    Route::post('/handle-payment', [PayPalPaymentController::class, 'createOrder'])->name('make.payment');
+Route::post('/mpesa_payment', [MpesaPaymentController::class, 'index'])->name('callback');
+Route::post('/handle-payment', [PayPalPaymentController::class, 'createOrder'])->name('make.payment');
 
-    Route::get('/cancel-payment', [PayPalPaymentController::class,'paymentCancel'])->name('cancel.payment');
+Route::get('/cancel-payment', [PayPalPaymentController::class,'paymentCancel'])->name('cancel.payment');
 
-    Route::post('/payment-success', [PayPalPaymentController::class, 'capturePayment'])->name('success.payment');
-    Route::get('/paypal', function () {
+Route::post('/payment-success', [PayPalPaymentController::class, 'capturePayment'])->name('success.payment');
+Route::get('/paypal', function () {
         return view('paypal_screen');
     });
 
 
-    Route::get('/staff', function(Request $request) {
+Route::get('/staff', function(Request $request) {
             try {
                 $staff = DB::table('staff')->select('first_name','last_name', 'email', 'phone', 'image_path', 'role')->get();
                 // $last_modified = now()->subSeconds(5);
@@ -93,7 +92,7 @@ Route::middleware('cors')->group(function () {
 
 
 
-});
+
 
 Route::middleware('throttle:api')->post('/send-email', function (Request $request) {
     try {
