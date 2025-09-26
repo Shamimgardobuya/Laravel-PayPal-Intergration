@@ -66,7 +66,7 @@ Route::get('/staff', function(Request $request) {
         } );
 
 
-    Route::middleware(['auth:api', 'role:Super Admin', 'throttle:api'])->group(function () {
+Route::middleware(['auth:api', 'role:Super Admin', 'throttle:api'])->group(function () {
         // dd("authoried");
             
         Route::post('/staff/update/{id}', [StaffController::class, 'update'])->name('staff.update');
@@ -77,8 +77,8 @@ Route::get('/staff', function(Request $request) {
         
         Route::delete('/users/delete/{id}',[ UserController::class, 'destroy'])->name('delete_user');
 
-        
-    });
+    
+});
 
 
     //Users Route
